@@ -10,6 +10,8 @@ the notes of the version's GitHub Release.
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-10-15
+
 ### Added
 
 - NIBE heat pumps from the myUplink cloud, one device per heat pump: outdoor,
@@ -29,3 +31,6 @@ the notes of the version's GitHub Release.
 - "Test the connection" button in the Configuration tab.
 - Names, messages, widget and documentation in English, French, German and
   Spanish.
+
+[Unreleased]: https://github.com/guim31/gladys-nibe/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/guim31/gladys-nibe/releases/tag/v1.0.1
