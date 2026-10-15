@@ -1,177 +1,259 @@
 {
   "manifest_version": 1,
   "type": "device",
-  "name": "Demo Devices Template",
+  "name": "NIBE myUplink",
   "description": {
-    "en": "Starter template showing sensors, a switch, a dimmable light and a smart plug.",
-    "fr": "Template de démarrage : capteurs, interrupteur, lampe variable et prise connectée."
+    "en": "NIBE heat pumps through myUplink: temperatures, compressor, hot water, heating offset, alarms.",
+    "fr": "Pompes à chaleur NIBE via myUplink : températures, compresseur, eau chaude, décalage, alarmes.",
+    "de": "NIBE-Wärmepumpen über myUplink: Temperaturen, Verdichter, Warmwasser, Heizkurve, Alarme.",
+    "es": "Bombas de calor NIBE vía myUplink: temperaturas, compresor, agua caliente, curva, alarmas."
   },
   "version": "1.0.0",
-  "docker_image": "ghcr.io/gladysassistant/integration-template-js:1.0.0",
+  "docker_image": "ghcr.io/guim31/gladys-nibe:1.0.0",
   "gladys_version": ">=5.1.0",
-  "cover_image": "https://raw.githubusercontent.com/GladysAssistant/integration-template-js/master/cover.png",
-  "categories": ["lighting", "security", "environment"],
-  "transports": ["local", "cloud"],
+  "cover_image": "https://raw.githubusercontent.com/guim31/gladys-nibe/main/cover.png",
+  "categories": ["climate"],
+  "transports": ["cloud"],
   "config_schema": [
     {
       "key": "intro",
       "type": "section",
-      "label": { "en": "Getting started", "fr": "Pour commencer" },
+      "label": {
+        "en": "Connect your myUplink account",
+        "fr": "Connecter votre compte myUplink",
+        "de": "Dein myUplink-Konto verbinden",
+        "es": "Conectar su cuenta myUplink"
+      },
       "description": {
-        "en": "The demo weather station reads real data from the free Open-Meteo API: pick the coordinates to observe. No account, no API key.",
-        "fr": "La station météo de démonstration lit de vraies données via l'API gratuite Open-Meteo : choisissez les coordonnées à observer. Pas de compte, pas de clé d'API."
+        "en": "Sign in to dev.myuplink.com with the account of your heat pump, create an application (free) and copy its client ID and secret below. Changing a setting from Gladys also needs the myUplink Premium Manage subscription. The documentation explains every step.",
+        "fr": "Connectez-vous à dev.myuplink.com avec le compte de votre pompe à chaleur, créez une application (gratuite) et copiez ci-dessous son identifiant et son secret. Modifier un réglage depuis Gladys exige aussi l'abonnement myUplink Premium Manage. La documentation détaille chaque étape.",
+        "de": "Melde dich auf dev.myuplink.com mit dem Konto deiner Wärmepumpe an, lege eine (kostenlose) Anwendung an und kopiere Client-ID und Secret hier hinein. Um Einstellungen aus Gladys zu ändern, brauchst du zusätzlich das myUplink-Abo Premium Manage. Die Dokumentation erklärt jeden Schritt.",
+        "es": "Inicie sesión en dev.myuplink.com con la cuenta de su bomba de calor, cree una aplicación (gratuita) y copie aquí su ID de cliente y su secreto. Cambiar un ajuste desde Gladys requiere además la suscripción myUplink Premium Manage. La documentación explica cada paso."
       },
       "links": [
         {
-          "url": "https://open-meteo.com/en/docs",
-          "label": { "en": "Open-Meteo documentation", "fr": "Documentation Open-Meteo" }
+          "url": "https://dev.myuplink.com/apps",
+          "label": {
+            "en": "myUplink applications",
+            "fr": "Applications myUplink",
+            "de": "myUplink-Anwendungen",
+            "es": "Aplicaciones myUplink"
+          }
         }
       ]
     },
     {
-      "key": "latitude",
-      "type": "number",
-      "label": { "en": "Latitude", "fr": "Latitude" },
-      "description": {
-        "en": "Latitude used for the demo weather sensor.",
-        "fr": "Latitude utilisée par le capteur météo de démonstration."
+      "key": "client_id",
+      "type": "string",
+      "label": {
+        "en": "Client ID",
+        "fr": "Identifiant (Client ID)",
+        "de": "Client-ID",
+        "es": "ID de cliente"
       },
-      "placeholder": { "en": "e.g. 48.8566", "fr": "ex. 48.8566" },
-      "required": true,
-      "default": 48.8566,
-      "min": -90,
-      "max": 90
+      "description": {
+        "en": "The \"Identifier\" of your application on dev.myuplink.com.",
+        "fr": "L'« Identifier » de votre application sur dev.myuplink.com.",
+        "de": "Der „Identifier“ deiner Anwendung auf dev.myuplink.com.",
+        "es": "El «Identifier» de su aplicación en dev.myuplink.com."
+      },
+      "placeholder": {
+        "en": "e.g. 0a1b2c3d-…",
+        "fr": "ex. 0a1b2c3d-…",
+        "de": "z. B. 0a1b2c3d-…",
+        "es": "p. ej. 0a1b2c3d-…"
+      },
+      "required": true
     },
     {
-      "key": "longitude",
-      "type": "number",
-      "label": { "en": "Longitude", "fr": "Longitude" },
-      "description": {
-        "en": "Longitude used for the demo weather sensor.",
-        "fr": "Longitude utilisée par le capteur météo de démonstration."
+      "key": "client_secret",
+      "type": "secret",
+      "label": {
+        "en": "Client secret",
+        "fr": "Secret (Client secret)",
+        "de": "Client-Secret",
+        "es": "Secreto de cliente"
       },
-      "placeholder": { "en": "e.g. 2.3522", "fr": "ex. 2.3522" },
-      "required": true,
-      "default": 2.3522,
-      "min": -180,
-      "max": 180
+      "description": {
+        "en": "The \"Secret\" of the same application. Stored by Gladys, never written to the logs.",
+        "fr": "Le « Secret » de la même application. Gardé par Gladys, jamais écrit dans les journaux.",
+        "de": "Das „Secret“ derselben Anwendung. Von Gladys gespeichert, nie in den Protokollen.",
+        "es": "El «Secret» de la misma aplicación. Guardado por Gladys, nunca escrito en los registros."
+      },
+      "required": true
     },
     {
-      "key": "unit",
+      "key": "poll_interval",
+      "type": "number",
+      "label": {
+        "en": "Refresh interval (minutes)",
+        "fr": "Intervalle de rafraîchissement (minutes)",
+        "de": "Aktualisierungsintervall (Minuten)",
+        "es": "Intervalo de actualización (minutos)"
+      },
+      "description": {
+        "en": "How often myUplink is read. 5 minutes is plenty for a heat pump and spares the quota.",
+        "fr": "Fréquence de lecture de myUplink. 5 minutes suffisent pour une PAC et ménagent le quota.",
+        "de": "Wie oft myUplink gelesen wird. 5 Minuten reichen für eine Wärmepumpe und schonen das Kontingent.",
+        "es": "Frecuencia de lectura de myUplink. 5 minutos bastan para una bomba de calor y ahorran cuota."
+      },
+      "required": false,
+      "default": 5,
+      "min": 1,
+      "max": 60
+    },
+    {
+      "key": "language",
       "type": "select",
-      "label": { "en": "Temperature unit", "fr": "Unité de température" },
-      "required": false,
-      "default": "celsius",
-      "options": [
-        { "value": "celsius", "label": { "en": "Celsius", "fr": "Celsius" } },
-        { "value": "fahrenheit", "label": { "en": "Fahrenheit", "fr": "Fahrenheit" } }
-      ]
-    },
-    {
-      "key": "poll_frequency",
-      "type": "number",
-      "label": { "en": "Refresh interval (s)", "fr": "Intervalle de rafraîchissement (s)" },
+      "label": {
+        "en": "Language of names and texts",
+        "fr": "Langue des noms et des textes",
+        "de": "Sprache der Namen und Texte",
+        "es": "Idioma de nombres y textos"
+      },
       "description": {
-        "en": "How often sensors are polled, in seconds (one minute minimum).",
-        "fr": "Fréquence d'interrogation des capteurs, en secondes (une minute minimum)."
+        "en": "Names of the features (fixed once the device is added), alarms, messages.",
+        "fr": "Noms des fonctionnalités (figés une fois l'appareil ajouté), alarmes, messages.",
+        "de": "Namen der Funktionen (fest, sobald das Gerät hinzugefügt ist), Alarme, Meldungen.",
+        "es": "Nombres de las funciones (fijos una vez añadido el dispositivo), alarmas, mensajes."
       },
       "required": false,
-      "default": 300,
-      "min": 60,
-      "max": 3600
+      "default": "fr",
+      "options": [
+        {
+          "value": "en",
+          "label": { "en": "English", "fr": "Anglais", "de": "Englisch", "es": "Inglés" }
+        },
+        {
+          "value": "fr",
+          "label": { "en": "French", "fr": "Français", "de": "Französisch", "es": "Francés" }
+        },
+        {
+          "value": "de",
+          "label": { "en": "German", "fr": "Allemand", "de": "Deutsch", "es": "Alemán" }
+        },
+        {
+          "value": "es",
+          "label": { "en": "Spanish", "fr": "Espagnol", "de": "Spanisch", "es": "Español" }
+        }
+      ]
     }
   ],
   "actions": [
     {
-      "key": "test_weather",
-      "label": { "en": "Test the weather provider", "fr": "Tester le fournisseur météo" },
+      "key": "test_connection",
+      "label": {
+        "en": "Test the connection",
+        "fr": "Tester la connexion",
+        "de": "Verbindung testen",
+        "es": "Probar la conexión"
+      },
       "timeout_seconds": 30
-    },
-    {
-      "key": "identify",
-      "label": { "en": "Identify a device", "fr": "Identifier un appareil" },
-      "fields": [
-        {
-          "key": "device",
-          "type": "select",
-          "source": "devices",
-          "label": { "en": "Device", "fr": "Appareil" },
-          "required": true
-        }
-      ]
     }
   ],
   "scene_triggers": [
     {
-      "key": "motion_detected",
-      "label": { "en": "Motion detected", "fr": "Mouvement détecté" },
+      "key": "alarm_raised",
+      "label": {
+        "en": "Heat pump alarm",
+        "fr": "Alarme de la pompe à chaleur",
+        "de": "Alarm der Wärmepumpe",
+        "es": "Alarma de la bomba de calor"
+      },
       "description": {
-        "en": "A demo motion sensor saw a person or an animal move.",
-        "fr": "Un détecteur de démonstration a vu bouger une personne ou un animal."
+        "en": "A heat pump raised a new alarm on myUplink (number, title and description in the variables).",
+        "fr": "Une pompe à chaleur signale une nouvelle alarme sur myUplink (numéro, titre et texte en variables).",
+        "de": "Eine Wärmepumpe meldet einen neuen Alarm auf myUplink (Nummer, Titel und Text als Variablen).",
+        "es": "Una bomba de calor señala una nueva alarma en myUplink (número, título y texto en las variables)."
       },
       "fields": [
         {
           "key": "device",
           "type": "select",
           "source": "devices",
-          "label": { "en": "Sensor", "fr": "Détecteur" }
-        },
-        {
-          "key": "target",
-          "type": "multi_select",
-          "label": { "en": "What moved", "fr": "Ce qui a bougé" },
-          "options": [
-            { "value": "person", "label": { "en": "Person", "fr": "Personne" } },
-            { "value": "animal", "label": { "en": "Animal", "fr": "Animal" } }
-          ]
+          "label": {
+            "en": "Heat pump",
+            "fr": "Pompe à chaleur",
+            "de": "Wärmepumpe",
+            "es": "Bomba de calor"
+          }
         }
       ],
       "variables": [
         {
-          "key": "target",
+          "key": "alarm_number",
+          "type": "number",
+          "label": {
+            "en": "Alarm number",
+            "fr": "Numéro de l'alarme",
+            "de": "Alarmnummer",
+            "es": "Número de alarma"
+          }
+        },
+        {
+          "key": "header",
           "type": "string",
-          "label": { "en": "What moved", "fr": "Ce qui a bougé" }
-        }
-      ]
-    }
-  ],
-  "scene_actions": [
-    {
-      "key": "identify_device",
-      "label": { "en": "Identify a device", "fr": "Identifier un appareil" },
-      "description": {
-        "en": "Make a device signal itself (the demo light blinks).",
-        "fr": "Fait se signaler un appareil (la lampe de démonstration clignote)."
-      },
-      "timeout_seconds": 15,
-      "fields": [
+          "label": {
+            "en": "Alarm title",
+            "fr": "Titre de l'alarme",
+            "de": "Alarmtitel",
+            "es": "Título de la alarma"
+          }
+        },
         {
-          "key": "device",
-          "type": "select",
-          "source": "devices",
-          "label": { "en": "Device", "fr": "Appareil" },
-          "required": true
-        }
-      ],
-      "outputs": [
+          "key": "description",
+          "type": "string",
+          "label": {
+            "en": "Alarm description",
+            "fr": "Description de l'alarme",
+            "de": "Alarmbeschreibung",
+            "es": "Descripción de la alarma"
+          }
+        },
         {
-          "key": "signalled",
-          "type": "boolean",
-          "label": { "en": "Device signalled", "fr": "Appareil signalé" }
+          "key": "severity",
+          "type": "number",
+          "label": {
+            "en": "Severity",
+            "fr": "Gravité",
+            "de": "Schweregrad",
+            "es": "Gravedad"
+          }
         }
       ]
     }
   ],
   "widgets": [
     {
-      "key": "demo_status",
-      "label": { "en": "Demo status", "fr": "État de la démo" },
-      "description": {
-        "en": "Live temperature and plug power, plug connection and observed location.",
-        "fr": "Température et puissance en direct, connexion de la prise, position observée."
+      "key": "heat_pump",
+      "label": {
+        "en": "Heat pump",
+        "fr": "Pompe à chaleur",
+        "de": "Wärmepumpe",
+        "es": "Bomba de calor"
       },
-      "icon": "activity",
-      "action_timeout_seconds": 15
+      "description": {
+        "en": "Heating, hot water, outdoor temperature and state of a NIBE heat pump.",
+        "fr": "Chauffage, eau chaude, température extérieure et état d'une PAC NIBE.",
+        "de": "Heizung, Warmwasser, Außentemperatur und Zustand einer NIBE-Wärmepumpe.",
+        "es": "Calefacción, agua caliente, temperatura exterior y estado de una bomba NIBE."
+      },
+      "icon": "thermometer",
+      "settings": [
+        {
+          "key": "device",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Heat pump",
+            "fr": "Pompe à chaleur",
+            "de": "Wärmepumpe",
+            "es": "Bomba de calor"
+          },
+          "required": true
+        }
+      ],
+      "action_timeout_seconds": 30
     }
   ]
 }

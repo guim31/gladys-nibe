@@ -1,45 +1,48 @@
 // -----------------------------------------------------------------------------
 // Integration configuration.
 //
-// The configuration is filled in by the user in Gladys, from the `config_schema`
-// declared in `gladys-assistant-integration.json`. The SDK fetches it for you
-// (`gladys.getConfig()`) and notifies you of every change through
-// `gladys.onConfigUpdated()`.
-//
-// This module only provides defaults and normalizes the received object, so the
-// rest of the code never has to deal with `undefined`.
+// Filled in by the user in Gladys from the `config_schema` of
+// `gladys-assistant-integration.json`; this module provides the defaults and
+// normalizes the received object, so the rest of the code never deals with
+// `undefined` or with a number typed as a string.
 // -----------------------------------------------------------------------------
 
-// Defaults: they MUST stay consistent with the `default` values declared in the
-// `config_schema` of the manifest.
+/** The languages of the Gladys interface: feature names, messages, widgets. */
+export const LANGUAGES = ['en', 'fr', 'de', 'es'];
+
+/** Refresh interval bounds, in minutes (see docs: myUplink quota). */
+export const POLL_MINUTES = { min: 1, max: 60, default: 5 };
+
+// Defaults: they MUST stay consistent with the `default` values of the
+// manifest `config_schema` (checked by test/manifest.test.js).
 export const DEFAULT_CONFIG = {
-  latitude: 48.8566, // Paris
-  longitude: 2.3522,
-  unit: 'celsius', // 'celsius' | 'fahrenheit'
-  // Seconds between two reads of the polled sensors. Gladys polls at most once
-  // a minute: slower intervals are applied by skipping polls (see
-  // createPoller in src/devices/index.js).
-  poll_frequency: 300,
-  // Reserved key (NOT in config_schema): because the manifest declares both
-  // 'local' and 'cloud' in its `transports` field, Gladys shows a standard
-  // "Prefer the local connection" toggle and sends the user's choice here.
-  // Read-only for the integration; defaults to true.
-  GLADYS_PREFER_LOCAL: true,
+  client_id: '',
+  client_secret: '',
+  poll_interval: POLL_MINUTES.default, // minutes
+  language: 'fr',
 };
 
 /**
  * Merge the user config with the defaults.
- * @param {Record<string, unknown>} raw config returned by the SDK
+ * @param {Record<string, unknown>} [raw] config returned by the SDK
  */
 export function normalizeConfig(raw = {}) {
+  const minutes = Math.round(Number(raw.poll_interval ?? DEFAULT_CONFIG.poll_interval));
   return {
-    ...DEFAULT_CONFIG,
-    ...raw,
-    // Force the types: config may arrive as strings from a form.
-    latitude: Number(raw.latitude ?? DEFAULT_CONFIG.latitude),
-    longitude: Number(raw.longitude ?? DEFAULT_CONFIG.longitude),
-    poll_frequency: Number(raw.poll_frequency ?? DEFAULT_CONFIG.poll_frequency),
-    // The preference is a boolean; anything but an explicit false means true.
-    GLADYS_PREFER_LOCAL: raw.GLADYS_PREFER_LOCAL !== false,
+    client_id: String(raw.client_id ?? '').trim(),
+    // A secret pasted from the developer portal often carries a trailing space.
+    client_secret: String(raw.client_secret ?? '').trim(),
+    poll_interval: Number.isFinite(minutes)
+      ? Math.min(POLL_MINUTES.max, Math.max(POLL_MINUTES.min, minutes))
+      : DEFAULT_CONFIG.poll_interval,
+    language: LANGUAGES.includes(raw.language) ? raw.language : DEFAULT_CONFIG.language,
   };
 }
+
+/** The integration can only reach myUplink once both credentials are set. */
+export function isConfigured(config) {
+  return Boolean(config.client_id && config.client_secret);
+}
+
+/** The refresh period, in milliseconds. */
+export const pollPeriodMs = (config) => config.poll_interval * 60 * 1000;

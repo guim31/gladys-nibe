@@ -31,16 +31,22 @@ pushing.
 ## Architecture
 
 ```
-index.js                          SDK wiring only: handlers registered before connect()
-src/devices/index.js              registry of the device blueprints + dispatch helpers
-src/devices/<type>.js             one device type per file (buildDevice, onPoll, onSetValue...)
-src/scenes.js                     scene action handlers (manifest `scene_actions`)
-src/widgets.js                    dashboard widget handlers (manifest `widgets`)
+index.js                          SDK wiring only (src/app.js registers the handlers before connect())
+src/app.js                        handlers: discovery, onSetValue, action, widget, config, lifecycle
+src/hub.js                        the account: discovery, refresh cycle, alarms + scene trigger, writes
+src/poller.js                     the container's own refresh timer, onPoll as fallback (Gladys#3198)
+src/devices.js                    heat pump -> Gladys device, features, states (pure)
+src/widgets.js                    "heat_pump" dashboard widget (pure builders)
+src/myuplink/client.js            myUplink API: OAuth client credentials, quota, error kinds
+src/myuplink/points.js            role catalog: which data point plays which role
+src/i18n.js                       every user-facing text, en/fr/de/es
 src/config.js                     DEFAULT_CONFIG (mirrors the manifest defaults) + normalization
-src/weather.js                    example driver (Open-Meteo)
-gladys-assistant-integration.json manifest: name, config_schema, actions, image...
-docs/en.md, docs/fr.md            user documentation, re-hosted by Gladys (mandatory)
-test/                             node --test, against the SDK's fake Gladys (integration-sdk/testing)
+src/store.js                      JSON files under /data (token, profiles, announced alarms)
+scripts/probe.mjs                 read-only probe of the real API (fake credentials by default)
+gladys-assistant-integration.json manifest: name, config_schema, actions, scene_triggers, widgets
+docs/{en,fr,de,es}.md             user documentation, re-hosted by Gladys (same sections)
+test/                             node --test, SDK fake Gladys + test/helpers/fakeMyUplink.js
+test/fixtures/myuplink/           real API answers (Home Assistant tests) + 2 synthetic files
 .github/scripts/release.mjs       release helpers (manifest bump, changelog), tested in test/
 ```
 
@@ -70,8 +76,9 @@ test/                             node --test, against the SDK's fake Gladys (in
   `type: "provider"`: 5.1.0). `test/manifest.test.js` ties the manifest to the
   code (defaults, action, scene and widget handlers): change both sides
   together.
-- **User-facing text** is bilingual (English and French): action messages,
-  manifest texts, and `docs/en.md` / `docs/fr.md`, kept in sync.
+- **User-facing text** exists in English, French, German and Spanish: action
+  messages, manifest texts, feature names, widget, and `docs/{en,fr,de,es}.md`
+  with the same sections. `test/i18n.test.js` enforces it.
 - **Style.** Prettier formats, ESLint catches mistakes. Comments explain why,
   in English. Tests never touch the network.
 
@@ -233,3 +240,33 @@ long, et sur un « Sie »/« Ihr… » de politesse en allemand. Le store exige 
 - Docs `en`, `fr`, `de`, `es` avec les mêmes sections.
 - Chauffe, ouverture, sécurité : ne rien rendre pilotable « comme un thermostat » ou par un assistant
   vocal quand une erreur serait dangereuse (leçon d'OctoPrint).
+
+## Intégration NIBE myUplink (pièges et choix, 15/10/2026)
+
+- **API** : `https://api.myuplink.com`, v2. Authentification OAuth2 _client credentials_ (Basic
+  `client_id:secret`, `grant_type=client_credentials`, scope `READSYSTEM WRITESYSTEM`, repli sur
+  `READSYSTEM` si `invalid_scope`) : c'est ce qu'utilisent le binding openHAB et myuplink-exporter pour
+  une application personnelle. Pas de redirection, donc pas de champ `oauth2`. Jeton d'environ 1 h dans
+  `/data/token.json` (0600), clé = empreinte SHA-256 des identifiants.
+- **Quota** : en-têtes `RateLimit-Limit/Remaining/Reset` (25 requêtes par fenêtre d'une minute d'après
+  jaroschek/home-assistant-myuplink) et 429 avec `Retry-After`. Le client se bloque jusqu'à la remise à
+  zéro au lieu de renvoyer. Un cycle = `systems/me` + 1 requête de points filtrée (`?parameters=`) par
+  PAC **ajoutée** ; les alarmes seulement si `hasAlarm`. Défaut 5 min.
+- **Points** : valeurs déjà mises à l'échelle ; `minValue`/`maxValue` sont **brutes** (multiplier par
+  `scaleValue`). `-32768` = sonde absente. Le point `65535` est un déchet de certains firmwares. Les noms
+  contiennent des tirets conditionnels (`\u00ad`) : les retirer avant toute comparaison. Les points sont
+  lus en `en-GB` (noms stables pour le classement), les alarmes dans la langue de l'utilisateur.
+- **Rôles** : identifiant de registre NIBE d'abord (série F, VVM, SMO : vérifiés sur les fixtures HA),
+  puis catégorie `sh-*` de myUplink, puis nom anglais. Une catégorie `sh-supplyTemp` porte aussi
+  « Calculated supply » (une consigne) : filtrée. La série S n'est couverte que par les noms (non vérifié).
+- **Priorité 49994** : la valeur réelle peut sortir de l'énumération (31 sur une F730) ; la dizaine donne
+  le mode.
+- **Écriture** : `PATCH /v2/devices/{id}/points` en `application/json-patch+json`, corps
+  `{ "<parameterId>": valeur }`. Exige l'abonnement « Premium Manage » (`GET
+/v2/systems/{id}/subscriptions`, type `manage`) : 403 sinon. Valeur brute de l'énumération pour un
+  select, nombre pour le décalage et le boost.
+- **Types Gladys** : pas d'unité hertz (fréquence en `text/text`) ; décalage de courbe en `text/select`
+  (jamais `thermostat`, cf. règle de sécurité chauffe) ; chaleur produite en `counter-sensor/integer`,
+  **pas** en `energy-sensor/index`, que le cœur rattache au compteur électrique principal.
+- **Accès réseau de la session** : `api.myuplink.com` et `dev.myuplink.com` sont injoignables depuis une
+  session de code ; `scripts/probe.mjs` est à lancer ailleurs.

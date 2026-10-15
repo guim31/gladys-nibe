@@ -28,8 +28,24 @@ Gladys before reporting a problem.
 
 ## Scope
 
-In scope: the code of this repository and the Docker image it publishes.
+In scope: the code of this repository and the Docker image it publishes, in
+particular:
+
+- **Secrets**: the myUplink client ID and secret live in the Gladys
+  configuration (the secret as a `secret` field). They are sent only to
+  `https://api.myuplink.com/oauth/token`, never written to the logs nor to
+  `/data`.
+- **`/data`**: `token.json` (the current myUplink access token, valid about an
+  hour, file readable by the owner only, keyed by a SHA-256 fingerprint of the
+  credentials, not the credentials themselves), `profiles.json` (which data
+  point plays which role on each heat pump) and `alarms.json` (the ids of the
+  alarms already announced).
+- **Network**: outgoing HTTPS to `api.myuplink.com` only; the container opens
+  no port and needs no access to the local network.
+- **Commands**: the integration writes only the heating curve offset, the hot
+  water mode and the hot water boost, and only the values myUplink declares
+  for them. It never resets an alarm.
 
 Out of scope: Gladys Assistant itself (see its
 [security policy](https://github.com/GladysAssistant/Gladys/security/policy)),
-and the third-party services and devices the integration talks to.
+myUplink and the heat pumps, which belong to NIBE.
