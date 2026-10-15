@@ -1,0 +1,368 @@
+[
+  {
+    "category": "VVM 320 E",
+    "parameterId": "40004",
+    "parameterName": "Current outd temp (BT1)",
+    "parameterUnit": "°C",
+    "writable": false,
+    "timestamp": "2026-10-14T08:00:00+00:00",
+    "value": 6.4,
+    "strVal": "6.4°C",
+    "smartHomeCategories": [],
+    "minValue": null,
+    "maxValue": null,
+    "stepValue": 1,
+    "enumValues": [],
+    "scaleValue": "0.1",
+    "zoneId": null
+  },
+  {
+    "category": "VVM 320 E",
+    "parameterId": "40008",
+    "parameterName": "Supply line (BT2)",
+    "parameterUnit": "°C",
+    "writable": false,
+    "timestamp": "2026-10-14T08:00:00+00:00",
+    "value": 31.2,
+    "strVal": "31.2°C",
+    "smartHomeCategories": [],
+    "minValue": null,
+    "maxValue": null,
+    "stepValue": 1,
+    "enumValues": [],
+    "scaleValue": "0.1",
+    "zoneId": null
+  },
+  {
+    "category": "VVM 320 E",
+    "parameterId": "40012",
+    "parameterName": "Return line (BT3)",
+    "parameterUnit": "°C",
+    "writable": false,
+    "timestamp": "2026-10-14T08:00:00+00:00",
+    "value": 27.9,
+    "strVal": "27.9°C",
+    "smartHomeCategories": [],
+    "minValue": null,
+    "maxValue": null,
+    "stepValue": 1,
+    "enumValues": [],
+    "scaleValue": "0.1",
+    "zoneId": null
+  },
+  {
+    "category": "VVM 320 E",
+    "parameterId": "40013",
+    "parameterName": "Hot water top (BT7)",
+    "parameterUnit": "°C",
+    "writable": false,
+    "timestamp": "2026-10-14T08:00:00+00:00",
+    "value": 49.5,
+    "strVal": "49.5°C",
+    "smartHomeCategories": [],
+    "minValue": null,
+    "maxValue": null,
+    "stepValue": 1,
+    "enumValues": [],
+    "scaleValue": "0.1",
+    "zoneId": null
+  },
+  {
+    "category": "VVM 320 E",
+    "parameterId": "40014",
+    "parameterName": "Hot water charg­ing (BT6)",
+    "parameterUnit": "°C",
+    "writable": false,
+    "timestamp": "2026-10-14T08:00:00+00:00",
+    "value": 47.1,
+    "strVal": "47.1°C",
+    "smartHomeCategories": [],
+    "minValue": null,
+    "maxValue": null,
+    "stepValue": 1,
+    "enumValues": [],
+    "scaleValue": "0.1",
+    "zoneId": null
+  },
+  {
+    "category": "VVM 320 E",
+    "parameterId": "40033",
+    "parameterName": "Room temp­erature (BT50)",
+    "parameterUnit": "°C",
+    "writable": false,
+    "timestamp": "2026-10-14T08:00:00+00:00",
+    "value": -32768,
+    "strVal": "-32768°C",
+    "smartHomeCategories": [],
+    "minValue": null,
+    "maxValue": null,
+    "stepValue": 1,
+    "enumValues": [],
+    "scaleValue": "0.1",
+    "zoneId": null
+  },
+  {
+    "category": "VVM 320 E",
+    "parameterId": "43136",
+    "parameterName": "Com­pressor fre­quency, actual",
+    "parameterUnit": "Hz",
+    "writable": false,
+    "timestamp": "2026-10-14T08:00:00+00:00",
+    "value": 48.3,
+    "strVal": "48.3Hz",
+    "smartHomeCategories": [],
+    "minValue": null,
+    "maxValue": null,
+    "stepValue": 1,
+    "enumValues": [],
+    "scaleValue": "0.1",
+    "zoneId": null
+  },
+  {
+    "category": "VVM 320 E",
+    "parameterId": "43427",
+    "parameterName": "Status com­pressor",
+    "parameterUnit": "",
+    "writable": false,
+    "timestamp": "2026-10-14T08:00:00+00:00",
+    "value": 20,
+    "strVal": "20",
+    "smartHomeCategories": [],
+    "minValue": null,
+    "maxValue": null,
+    "stepValue": 1,
+    "enumValues": [
+      {
+        "value": "20",
+        "text": "off",
+        "icon": ""
+      },
+      {
+        "value": "40",
+        "text": "starts",
+        "icon": ""
+      },
+      {
+        "value": "60",
+        "text": "runs",
+        "icon": ""
+      },
+      {
+        "value": "100",
+        "text": "stops",
+        "icon": ""
+      }
+    ],
+    "scaleValue": "1",
+    "zoneId": null
+  },
+  {
+    "category": "VVM 320 E",
+    "parameterId": "49994",
+    "parameterName": "Prior­ity",
+    "parameterUnit": "",
+    "writable": false,
+    "timestamp": "2026-10-14T08:00:00+00:00",
+    "value": 20,
+    "strVal": "20",
+    "smartHomeCategories": [],
+    "minValue": null,
+    "maxValue": null,
+    "stepValue": 1,
+    "enumValues": [
+      {
+        "value": "10",
+        "text": "Off",
+        "icon": ""
+      },
+      {
+        "value": "20",
+        "text": "Hot water",
+        "icon": ""
+      },
+      {
+        "value": "30",
+        "text": "Heating",
+        "icon": ""
+      },
+      {
+        "value": "40",
+        "text": "Pool",
+        "icon": ""
+      },
+      {
+        "value": "50",
+        "text": "Trans­fer",
+        "icon": ""
+      },
+      {
+        "value": "60",
+        "text": "Cooling",
+        "icon": ""
+      }
+    ],
+    "scaleValue": "1",
+    "zoneId": null
+  },
+  {
+    "category": "VVM 320 E",
+    "parameterId": "47011",
+    "parameterName": "Heating offset climate system 1",
+    "parameterUnit": "",
+    "writable": true,
+    "timestamp": "2026-10-14T08:00:00+00:00",
+    "value": -2,
+    "strVal": "-2",
+    "smartHomeCategories": [],
+    "minValue": -10,
+    "maxValue": 10,
+    "stepValue": 1,
+    "enumValues": [],
+    "scaleValue": "1",
+    "zoneId": null
+  },
+  {
+    "category": "VVM 320 E",
+    "parameterId": "47041",
+    "parameterName": "comfort mode",
+    "parameterUnit": "",
+    "writable": true,
+    "timestamp": "2026-10-14T08:00:00+00:00",
+    "value": 1,
+    "strVal": "1",
+    "smartHomeCategories": [],
+    "minValue": null,
+    "maxValue": null,
+    "stepValue": 1,
+    "enumValues": [
+      {
+        "value": "0",
+        "text": "economy",
+        "icon": ""
+      },
+      {
+        "value": "1",
+        "text": "normal",
+        "icon": ""
+      },
+      {
+        "value": "2",
+        "text": "luxury",
+        "icon": ""
+      }
+    ],
+    "scaleValue": "1",
+    "zoneId": null
+  },
+  {
+    "category": "VVM 320 E",
+    "parameterId": "48132",
+    "parameterName": "temporary lux",
+    "parameterUnit": "",
+    "writable": true,
+    "timestamp": "2026-10-14T08:00:00+00:00",
+    "value": 0,
+    "strVal": "0",
+    "smartHomeCategories": [],
+    "minValue": null,
+    "maxValue": null,
+    "stepValue": 1,
+    "enumValues": [
+      {
+        "value": "0",
+        "text": "off",
+        "icon": ""
+      },
+      {
+        "value": "1",
+        "text": "3 hrs",
+        "icon": ""
+      },
+      {
+        "value": "2",
+        "text": "6 hrs",
+        "icon": ""
+      },
+      {
+        "value": "3",
+        "text": "12 hrs",
+        "icon": ""
+      },
+      {
+        "value": "4",
+        "text": "one time increase",
+        "icon": ""
+      }
+    ],
+    "scaleValue": "1",
+    "zoneId": null
+  },
+  {
+    "category": "VVM 320 E",
+    "parameterId": "44298",
+    "parameterName": "Heat meter - HW cpr and add",
+    "parameterUnit": "kWh",
+    "writable": false,
+    "timestamp": "2026-10-14T08:00:00+00:00",
+    "value": 5123.4,
+    "strVal": "5123.4kWh",
+    "smartHomeCategories": [],
+    "minValue": null,
+    "maxValue": null,
+    "stepValue": 1,
+    "enumValues": [],
+    "scaleValue": "0.1",
+    "zoneId": null
+  },
+  {
+    "category": "VVM 320 E",
+    "parameterId": "44300",
+    "parameterName": "Heat meter - heating, cpr and add",
+    "parameterUnit": "kWh",
+    "writable": false,
+    "timestamp": "2026-10-14T08:00:00+00:00",
+    "value": 21876.9,
+    "strVal": "21876.9kWh",
+    "smartHomeCategories": [],
+    "minValue": null,
+    "maxValue": null,
+    "stepValue": 1,
+    "enumValues": [],
+    "scaleValue": "0.1",
+    "zoneId": null
+  },
+  {
+    "category": "VVM 320 E",
+    "parameterId": "44306",
+    "parameterName": "Heat meter - HW cpr",
+    "parameterUnit": "kWh",
+    "writable": false,
+    "timestamp": "2026-10-14T08:00:00+00:00",
+    "value": 4980.1,
+    "strVal": "4980.1kWh",
+    "smartHomeCategories": [],
+    "minValue": null,
+    "maxValue": null,
+    "stepValue": 1,
+    "enumValues": [],
+    "scaleValue": "0.1",
+    "zoneId": null
+  },
+  {
+    "category": "VVM 320 E",
+    "parameterId": "44308",
+    "parameterName": "Heat meter - heating cpr",
+    "parameterUnit": "kWh",
+    "writable": false,
+    "timestamp": "2026-10-14T08:00:00+00:00",
+    "value": 20111.2,
+    "strVal": "20111.2kWh",
+    "smartHomeCategories": [],
+    "minValue": null,
+    "maxValue": null,
+    "stepValue": 1,
+    "enumValues": [],
+    "scaleValue": "0.1",
+    "zoneId": null
+  }
+]
