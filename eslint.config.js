@@ -1,7 +1,7 @@
 // -----------------------------------------------------------------------------
 // ESLint flat config (ESLint 9+).
 //
-// Goal for this template: catch real mistakes (undefined variables, unused
+// Goal: catch real mistakes (undefined variables, unused
 // code, unreachable branches) without fighting Prettier over formatting.
 //   - `@eslint/js` recommended  -> the sensible built-in rule set;
 //   - `eslint-config-prettier`  -> turns OFF every stylistic rule so Prettier
